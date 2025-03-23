@@ -11,14 +11,6 @@ export class AuthService {
     this.userDao = new UserDao();
   }
 
-  private verifyRefreshToken(refreshToken: string): UserInfoForTokenDto {
-    const verifiedResult = jwt.verify(
-      refreshToken,
-      process.env.REFRESH_TOKEN_SECRET!
-    ) as UserInfoForTokenDto;
-    return verifiedResult;
-  }
-
   private issueAccessToken(user: UserInfoForTokenDto) {
     return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET!, {
       expiresIn: "1h",
@@ -44,6 +36,27 @@ export class AuthService {
       .update(password)
       .digest("base64");
     return hashedPassword;
+  }
+
+  private verifyAuthToken(
+    token: string,
+    type: "refreshToken" | "accessToken"
+  ): UserInfoForTokenDto {
+    const verifiedResult = jwt.verify(
+      token,
+      type === "refreshToken"
+        ? process.env.REFRESH_TOKEN_SECRET!
+        : process.env.ACCESS_TOKEN_SECRET!
+    ) as UserInfoForTokenDto;
+    return verifiedResult;
+  }
+
+  private verifyRefreshToken(refreshToken: string): UserInfoForTokenDto {
+    return this.verifyAuthToken(refreshToken, "refreshToken");
+  }
+
+  verifyAccessToken(accessToken: string): UserInfoForTokenDto {
+    return this.verifyAuthToken(accessToken, "accessToken");
   }
 
   /* 로그인 */
