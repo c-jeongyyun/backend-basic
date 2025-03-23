@@ -6,7 +6,7 @@ import {
   timestamp,
   uuid,
 } from "drizzle-orm/pg-core";
-import { postingsTable } from "modules/posting/posting.schema";
+import { postingsTable } from "./posting.schema";
 
 export const commentsTable = pgTable("comments", {
   id: uuid("id").defaultRandom().primaryKey(),

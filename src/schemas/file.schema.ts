@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
 import { bigint, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { postingsTable } from "modules/posting/posting.schema";
+import { postingsTable } from "./posting.schema";
 
 export const filesTable = pgTable("files", {
   id: uuid("id").defaultRandom().primaryKey(),
