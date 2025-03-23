@@ -4,7 +4,9 @@ import { postingsTable } from "modules/posting/posting.schema";
 
 export const filesTable = pgTable("files", {
   id: uuid("id").defaultRandom().primaryKey(),
-  posting_id: uuid("posting_id").notNull(), // [ref: > Posting.id]
+  posting_id: uuid("posting_id")
+    .notNull()
+    .references(() => postingsTable.id, { onDelete: "cascade" }), // [ref: > Posting.id]
   url: text().notNull(),
   filename: text().notNull(),
   file_size: bigint({ mode: "bigint" }).notNull(),

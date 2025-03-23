@@ -8,6 +8,13 @@
       "when": 1741005315183,
       "tag": "0000_init_user_table",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1742711572425,
+      "tag": "0001_init_postings_comments_files",
+      "breakpoints": true
     }
   ]
 }
