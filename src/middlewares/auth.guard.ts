@@ -19,6 +19,7 @@ export const authGuard: Handler = (
   // 2. access token 검증
   try {
     jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET!);
+    next();
   } catch (err) {
     return next(createError(401));
   }
