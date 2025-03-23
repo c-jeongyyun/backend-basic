@@ -1,5 +1,5 @@
 import pg from "pg";
-import { PgPool } from "infrastructures/pg/pgPool";
+import { PgPool } from "infrastructures/database/pg/pgPool";
 
 export class UserDao {
   private pool: pg.Pool;
@@ -13,16 +13,16 @@ export class UserDao {
       id: string;
       userId: string;
       password: string;
-    }>(`SELECT * FROM "user" WHERE user_id = $1`, [args.userId]);
+    }>(`SELECT * FROM "users" WHERE user_id = $1`, [args.userId]);
     console.log("Getting user successfully");
     return result;
   }
 
-  async addUser(args: AddUserArgs) {
+  async addUser(params: AddUserParams) {
     try {
       await this.pool.query(
-        `INSERT INTO "user" (user_id, password) VALUES ($1, $2)`,
-        [args.userId, args.password]
+        `INSERT INTO "users" (user_id, password) VALUES ($1, $2)`,
+        [params.userId, params.password]
       );
       console.log("User added successfully");
     } catch (error) {
@@ -31,9 +31,9 @@ export class UserDao {
     }
   }
 
-  async getUserById(args: GetUserByUserIdArgs) {
+  async getUserById(params: GetUserByUserIdParams) {
     try {
-      const result = await this.selectUserById({ userId: args.userId });
+      const result = await this.selectUserById({ userId: params.userId });
 
       if (!result || result.rowCount === 0) {
         throw new Error("User not found");
@@ -45,9 +45,9 @@ export class UserDao {
     }
   }
 
-  async findUserById(args: FindUserByUserIdArgs) {
+  async findUserById(params: FindUserByUserIdParams) {
     try {
-      const result = await this.selectUserById({ userId: args.userId });
+      const result = await this.selectUserById({ userId: params.userId });
       return result.rowCount === 0 ? null : result.rows[0];
     } catch (error) {
       console.error("Error finding user:", error);
@@ -55,11 +55,11 @@ export class UserDao {
     }
   }
 
-  async updateUser(args: UpdateUserArgs) {
+  async updateUser(params: UpdateUserParams) {
     try {
       await this.pool.query(
-        `UPDATE "user" SET user_id = $2, password = $3 WHERE id = $1`,
-        [args.id, args.userId, args.password]
+        `UPDATE "users" SET user_id = $2, password = $3 WHERE id = $1`,
+        [params.id, params.userId, params.password]
       );
       console.log("User updated successfully");
     } catch (error) {
@@ -67,9 +67,9 @@ export class UserDao {
       throw error;
     }
   }
-  async deleteUser(args: DeleteUserArgs) {
+  async deleteUser(params: DeleteUserParams) {
     try {
-      await this.pool.query("DELETE FROM user WHERE id = $1", [args.id]);
+      await this.pool.query("DELETE FROM users WHERE id = $1", [params.id]);
       console.log("User deleted successfully");
     } catch (error) {
       console.error("Error deleting user:", error);
@@ -80,8 +80,8 @@ export class UserDao {
   }
 }
 
-type AddUserArgs = { userId: string; password: string };
-type GetUserByUserIdArgs = { userId: string };
-type FindUserByUserIdArgs = { userId: string };
-type UpdateUserArgs = { id: string; userId: string; password: string };
-type DeleteUserArgs = { id: string };
+type AddUserParams = { userId: string; password: string };
+type GetUserByUserIdParams = { userId: string };
+type FindUserByUserIdParams = { userId: string };
+type UpdateUserParams = { id: string; userId: string; password: string };
+type DeleteUserParams = { id: string };
