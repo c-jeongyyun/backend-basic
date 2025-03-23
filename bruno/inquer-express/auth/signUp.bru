@@ -1,0 +1,18 @@
+meta {
+  name: signUp
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/sign-up
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "userId": "choi2",
+    "password": "test"
+  }
+}

@@ -1,0 +1,32 @@
+meta {
+  name: create
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/postings
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: 
+}
+
+body:json {
+  {
+    "title":"hello2", 
+    "content":"this is me"
+  }
+}
+
+script:pre-request {
+  const cookie = bru.getVar("cookie");
+  
+  console.log(cookie)
+  
+  if(cookie) {
+    req.setHeader("Cookie", cookie)
+  }
+}

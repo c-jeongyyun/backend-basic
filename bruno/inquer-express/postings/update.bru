@@ -1,0 +1,28 @@
+meta {
+  name: update
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/postings/3940b370-bb41-43fb-b2a4-e5b8c0bf2e44
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title":"goo hello updated123",
+    "content": "new updatedContent!"
+  }
+}
+
+script:pre-request {
+  const cookie = bru.getVar("cookie");
+  
+  console.log(cookie)
+  
+  if(cookie) {
+    req.setHeader("Cookie", cookie)
+  }
+}
