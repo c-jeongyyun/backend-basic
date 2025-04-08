@@ -1,0 +1,33 @@
+meta {
+  name: getComments
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/comments/{{postingId}}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: 
+}
+
+script:pre-request {
+  const cookie = bru.getVar("cookie");
+  
+  console.log(cookie)
+  
+  if(cookie) {
+    req.setHeader("Cookie", cookie)
+  }
+}
+
+script:post-response {
+  const comments = res.body.comments;
+  if(comments.length>0){
+    const commentIdKey ="commentId";  
+    bru.setEnvVar(commentIdKey,comments[0].id)
+  }
+}

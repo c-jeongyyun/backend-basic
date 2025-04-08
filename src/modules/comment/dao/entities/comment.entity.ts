@@ -1,9 +1,12 @@
 export type CommentEntity = {
   id: string;
-  writerId: string;
   content: string;
+  user: {
+    id: string;
+    userId: string;
+  };
   createdAt: Date;
   updatedAt: Date;
-  parentId?: string;
-  comments: CommentEntity[];
+  postingId: string;
+  parentId: string | undefined;
 };

@@ -1,0 +1,33 @@
+meta {
+  name: createReply
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/comments
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: 
+}
+
+body:json {
+  {
+    "postingId":"{{postingId}}",
+    "parentId":"{{commentId}}",
+    "content":"this is reply"
+  }
+}
+
+script:pre-request {
+  const cookie = bru.getVar("cookie");
+  
+  console.log(cookie)
+  
+  if(cookie) {
+    req.setHeader("Cookie", cookie)
+  }
+}

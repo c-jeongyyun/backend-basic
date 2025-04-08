@@ -7,6 +7,7 @@ import { AppRouter } from "app.router";
 
 import cookieParser from "cookie-parser";
 import { addPostingRoutes } from "modules/posting/controller/posting.controller";
+import { addCommentRoutes } from "modules/comment/controller/comment.controller";
 
 const port = 8080;
 
@@ -22,11 +23,6 @@ const main = async (port: number) => {
 
   app.use(cookieParser());
 
-  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    console.error(err.stack);
-    res.sendStatus(500).send("Something broke!");
-  });
-
   // TODO 에러처리 이상함. 정상화필요 (첫번째 인자가 err가 아닌듯.. 쨌든 뭔가 이상함)
   // app.use((err: Error, req: Request, res: Response) => {
   //   console.log(err);
@@ -41,7 +37,14 @@ const main = async (port: number) => {
   // TODO 구조화할 방법 생각해보기 - addAuthRoutes ->  app.use(router); 순서가 유지되어야 하기 때문
   addAuthRoutes();
   addPostingRoutes();
+  addCommentRoutes();
+
   app.use(router);
+
+  app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    console.error(err.stack);
+    res.sendStatus(500).send("Something broke!");
+  });
 };
 
 await main(port);

@@ -1,0 +1,27 @@
+meta {
+  name: update
+  type: http
+  seq: 3
+}
+
+patch {
+  url: {{baseUrl}}/comments/{{commentId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "content": "댓글 업데이트!!"
+  }
+}
+
+script:pre-request {
+  const cookie = bru.getVar("cookie");
+  
+  console.log(cookie)
+  
+  if(cookie) {
+    req.setHeader("Cookie", cookie)
+  }
+}

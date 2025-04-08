@@ -4,5 +4,31 @@ export type CommentDto = {
   content: string;
   createdAt: Date;
   updatedAt: Date;
-  comments: CommentDto[];
+};
+
+export type CreateParamsDto = {
+  userId: string;
+  content: string;
+  postingId: string;
+  parentId: string | undefined;
+};
+
+export type UpdateParamsDto = {
+  id: string;
+  userId: string;
+  content: string;
+};
+
+export type DeleteParamsDto = {
+  id: string;
+  userId: string;
+  postingId: string;
+};
+
+export type GetCommentsParamsDto = {
+  postingId: string;
+};
+
+export type GetReplyCommentsParamsDto = {
+  parentId: string;
 };
