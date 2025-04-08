@@ -1,5 +1,4 @@
-import pg, { QueryConfigValues } from "pg";
-import { CommentEntity } from "modules/comment/entity/comment.entity";
+import pg from "pg";
 import { PgPool } from "infrastructures/database/pg/pgPool";
 
 export class PostingDao {
@@ -8,33 +7,43 @@ export class PostingDao {
     this.pool = PgPool.getInstance();
   }
 
-  async getById(params: GetByIdParams) {
-    // TODO 작동확인해보고 구현해야할듯.. 잘모르겟어
-    const result = await this.pool.query<GetByIdResult>(
-      `SELECT id, title, content, user.id as user_id, user.user_id as user_user_id, created_at, updated_at, files, comments,
-      
-      from "postings" as p 
-      WHERE id = $1 
-      JOIN "comments" as c 
-      ON p.id = c.posting_id
-      JOIN "users" as u 
-      ON p.user_id = u.id
+  async getById(params: GetByIdParams): Promise<GetByIdResult> {
+    const result = await this.pool.query<{
+      id: string;
+      title: string;
+      content: string;
+      user_id: string;
+      user_user_id: string;
+      created_at: Date;
+      updated_at: Date;
+    }>(
+      `SELECT p.id, p.title, p.content, p.created_at, p.updated_at, u.id as user_id, u.user_id as user_user_id
+      FROM "postings" as p  
+      JOIN "users" as u
+      ON p.user_id = u.id   
+      WHERE p.id = $1 
       `,
       [params.id]
     );
 
-    console.log("getByIdResult", result);
+    console.log("getByIdResult", result.rows);
 
-    // return {
-    //   id :result.id,
-    //   title :result.title,
-    //   content :result.content,
-    //   user :result.user,
-    //   createdAt :result.createdAt,
-    //   updatedAt :result.updatedAt,
-    //   files :result.files,
-    //   comments :result.comments,
-    // }
+    if (result.rows.length === 0) {
+      throw new Error("No posting found");
+    }
+
+    const resultRow = result.rows[0];
+    return {
+      id: resultRow.id,
+      title: resultRow.title,
+      content: resultRow.content,
+      user: {
+        id: resultRow.user_id,
+        userId: resultRow.user_user_id,
+      },
+      createdAt: resultRow.created_at,
+      updatedAt: resultRow.updated_at,
+    };
   }
 
   // TODO 페이지네이션
@@ -88,8 +97,6 @@ export class PostingDao {
 
 type GetByIdParams = { id: string };
 
-type GetByIdResultComment = CommentEntity;
-
 type GetByIdResultUser = {
   id: string;
   userId: string;
@@ -102,8 +109,6 @@ type GetByIdResult = {
   user: GetByIdResultUser;
   createdAt: Date;
   updatedAt: Date;
-  files: File[];
-  comments: GetByIdResultComment[];
 };
 
 type GetPageParams = {};

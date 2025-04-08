@@ -1,24 +1,17 @@
 meta {
-  name: create
+  name: get
   type: http
-  seq: 1
+  seq: 4
 }
 
-post {
-  url: {{baseUrl}}/postings
+get {
+  url: {{baseUrl}}/postings/{{postingId}}
   body: json
   auth: bearer
 }
 
 auth:bearer {
   token: 
-}
-
-body:json {
-  {
-    "title":"hello3", 
-    "content":"this is me"
-  }
 }
 
 script:pre-request {
@@ -29,4 +22,10 @@ script:pre-request {
   if(cookie) {
     req.setHeader("Cookie", cookie)
   }
+}
+
+script:post-response {
+  const postingId = res.body.id;
+  const postingIdKey ="postingId";
+  bru.setEnvVar(postingIdKey,postingId)
 }

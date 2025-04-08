@@ -1,5 +1,3 @@
-import { CommentEntity } from "modules/comment/entity/comment.entity";
-
 export type PostingEntity = {
   id: string;
   title: string;
@@ -7,6 +5,5 @@ export type PostingEntity = {
   writerId: string;
   createdAt: Date;
   updatedAt: Date;
-  comments: CommentEntity[];
   //   files:File[]
 };

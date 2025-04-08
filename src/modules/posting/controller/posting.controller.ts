@@ -37,8 +37,8 @@ export const addPostingRoutes = () => {
         const postingService = new PostingService();
         const result = await postingService.getById({ id: postingId });
 
-        // res.send(result);
-        res.sendStatus(200);
+        res.send(result);
+        // res.sendStatus(200);
       } catch (err) {
         return next(err);
       }

@@ -7,5 +7,4 @@ export type PostingDto = {
   writerId: string;
   createdAt: Date;
   updatedAt: Date;
-  comments: CommentDto[];
 };

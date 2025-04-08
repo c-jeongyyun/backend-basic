@@ -1,5 +1,3 @@
-import { PostingGetByIdRespComment } from "./getByIdRespComment";
-
 export interface PostingGetByIdResp {
   id: string;
   title: string;
@@ -7,5 +5,4 @@ export interface PostingGetByIdResp {
   writerId: string;
   createdAt: Date;
   updatedAt: Date;
-  comments: PostingGetByIdRespComment[];
 }

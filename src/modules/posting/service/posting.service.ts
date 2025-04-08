@@ -8,10 +8,16 @@ export class PostingService {
     this.postingDao = new PostingDao();
   }
 
-  async getById(params: GetByIdParams) {
-    // TODO
-    // : Promise<PostingDto> {
-    // return await this.postingDao.getById(params);
+  async getById(params: GetByIdParams): Promise<PostingDto> {
+    const result = await this.postingDao.getById(params);
+    return {
+      id: result.id,
+      title: result.title,
+      content: result.content,
+      writerId: result.user.userId,
+      createdAt: result.createdAt,
+      updatedAt: result.updatedAt,
+    };
   }
 
   async getPage() {
