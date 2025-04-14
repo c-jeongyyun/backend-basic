@@ -1,4 +1,4 @@
-import { PostingDto } from "./dtos/posting.dto";
+import { GetPageResultDto, PostingDto } from "./dtos/posting.dto";
 import { PostingDao } from "../dao/posting.dao";
 
 export class PostingService {
@@ -20,8 +20,19 @@ export class PostingService {
     };
   }
 
-  async getPage() {
-    // await this.postingDao.getPage();
+  async getPage(params: GetPageParams): Promise<GetPageResultDto> {
+    const result = await this.postingDao.getPage(params);
+    return {
+      lastCursor: result.lastCursor,
+      postings: result.postings.map((post) => ({
+        id: post.id,
+        title: post.title,
+        content: post.content,
+        writerId: post.user.userId,
+        createdAt: post.createdAt,
+        updatedAt: post.updatedAt,
+      })),
+    };
   }
 
   async create(params: CreateParams) {
@@ -40,6 +51,15 @@ export class PostingService {
 }
 
 export type GetByIdParams = { id: string };
+export type GetPageParams = {
+  keyword?: string;
+  limit: number;
+  sortBy: {
+    key: "createdAt" | "updatedAt" | "title";
+    orderBy: "ASC" | "DESC";
+  }[];
+  cursor: string | null;
+};
 
 export type CreateParams = {
   title: string;

@@ -15,6 +15,7 @@ import { body, param } from "express-validator";
 import { PostingUpdateBody } from "./interfaces/patch/update.body";
 import { PostingDeleteParams } from "./interfaces/delete/delete.params";
 import { PostingUpdateParams } from "./interfaces/patch/update.params";
+import { GetPageResp } from "./interfaces/post/getPage.resp";
 
 export const addPostingRoutes = () => {
   const router = AppRouter.getInstance();
@@ -46,6 +47,23 @@ export const addPostingRoutes = () => {
   );
 
   router.post(
+    `${baseUrl}/pages`,
+    // body("limit").isString().notEmpty(),
+    // body("content").isString().notEmpty(),
+    // validatePipe,
+    getCurrentUserPipe,
+    async (
+      req: RequestWithUserInfo<PostingCreateBody>,
+      res: Response<GetPageResp>,
+      next
+    ) => {
+      const postingService = new PostingService();
+      const result = await postingService.getPage(req.body);
+
+      res.send(result);
+    }
+  );
+  router.post(
     baseUrl,
     body("title").isString().notEmpty(),
     body("content").isString().notEmpty(),
@@ -59,7 +77,7 @@ export const addPostingRoutes = () => {
         content: req.body.content,
       });
 
-      res.send(201);
+      res.sendStatus(201);
     }
   );
 
