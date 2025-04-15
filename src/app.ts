@@ -8,6 +8,7 @@ import { AppRouter } from "app.router";
 import cookieParser from "cookie-parser";
 import { addPostingRoutes } from "modules/posting/controller/posting.controller";
 import { addCommentRoutes } from "modules/comment/controller/comment.controller";
+import { addFileRoutes } from "modules/file/controller/file.controller";
 
 const port = 8080;
 
@@ -38,6 +39,7 @@ const main = async (port: number) => {
   addAuthRoutes();
   addPostingRoutes();
   addCommentRoutes();
+  addFileRoutes();
 
   app.use(router);
 

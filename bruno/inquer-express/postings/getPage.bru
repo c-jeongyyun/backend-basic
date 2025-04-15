@@ -16,7 +16,7 @@ auth:bearer {
 
 body:json {
   {
-    "cursor": "{{lastCursor}}",
+    // "cursor": "{{lastCursor}}",
     "keyword": "hello",
     "limit": 2,
     "sortBy": [
@@ -50,4 +50,10 @@ script:post-response {
   const lastCursor =res.body.lastCursor
   const envKey = 'lastCursor';
   bru.setEnvVar(envKey,lastCursor)
+  
+  const postingEnvKey ='postingId';
+  const postings= res.body.postings
+  if(postings.length>0){
+    bru.setEnvVar(postingEnvKey,postings[0].id)
+  }
 }

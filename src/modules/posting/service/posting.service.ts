@@ -1,6 +1,6 @@
 import { GetPageResultDto, PostingDto } from "./dtos/posting.dto";
 import { PostingDao } from "../dao/posting.dao";
-import { FileDao } from "modules/file/file.dao";
+import { FileDao } from "modules/file/dao/file.dao";
 
 export class PostingService {
   private readonly postingDao: PostingDao;
@@ -40,11 +40,7 @@ export class PostingService {
 
   // TODO 트랜잭션 처리해야함...
   async create(params: CreateParams) {
-    const postingId = await this.postingDao.create(params);
-    await this.fileDao.create({
-      postingId,
-      files: params.files ?? [],
-    });
+    await this.postingDao.create(params);
   }
 
   async update(params: UpdateParams) {
@@ -73,12 +69,6 @@ export type CreateParams = {
   title: string;
   content: string;
   userId: string;
-  files?: {
-    url: string;
-    filename: string;
-    fileSize: number;
-    mimetype: string;
-  }[];
 };
 
 export type UpdateParams = {

@@ -1,4 +1,3 @@
-import { files } from "./../../../schemas/file.schema";
 import { PostingService } from "../service/posting.service";
 import { Request, Response } from "express";
 
@@ -17,12 +16,10 @@ import { PostingUpdateBody } from "./interfaces/patch/update.body";
 import { PostingDeleteParams } from "./interfaces/delete/delete.params";
 import { PostingUpdateParams } from "./interfaces/patch/update.params";
 import { GetPageResp } from "./interfaces/post/getPage.resp";
-import multer from "multer";
 
 export const addPostingRoutes = () => {
   const router = AppRouter.getInstance();
   const baseUrl = "/api/postings";
-  const upload = multer({ dest: "uploads/posting/" });
 
   // auth guard 등록
   router.use(baseUrl, authGuard);
@@ -68,26 +65,16 @@ export const addPostingRoutes = () => {
   );
   router.post(
     baseUrl,
-    upload.array("files", 5), // 5개까지 업로드 가능
     body("title").isString().notEmpty(),
     body("content").isString().notEmpty(),
     validatePipe,
     getCurrentUserPipe,
     async (req: any, res, next) => {
-      console.log("req.files", req.files);
-      console.log("req.body", req.body);
-
       const postingService = new PostingService();
       await postingService.create({
         userId: req.body.userInfo.id,
         title: req.body.title,
         content: req.body.content,
-        files: req.files.map((file: any) => ({
-          url: file.path,
-          filename: file.originalname,
-          mimetype: file.mimetype,
-          fileSize: file.size,
-        })),
       });
 
       res.sendStatus(201);
