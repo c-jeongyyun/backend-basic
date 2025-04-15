@@ -240,11 +240,13 @@ export class PostingDao {
     };
   }
 
-  async create(params: CreateParams) {
-    await this.pool.query(
-      `INSERT INTO "postings" (title, content, user_id) VALUES ($1, $2, $3)`,
+  async create(params: CreateParams): Promise<string> {
+    const result = await this.pool.query(
+      `INSERT INTO "postings" (title, content, user_id) VALUES ($1, $2, $3) RETURNING *`,
       [params.title, params.content, params.userId]
     );
+
+    return result.rows[0].id;
   }
 
   async update(params: UpdateParams) {

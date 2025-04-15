@@ -1,0 +1,1 @@
+ALTER TABLE "files" ALTER COLUMN "upload_at" SET DEFAULT now();

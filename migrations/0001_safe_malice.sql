@@ -1,0 +1,1 @@
+ALTER TABLE "files" ADD COLUMN "mimetype" text NOT NULL;

@@ -19,6 +19,7 @@
     "express-validator": "^7.2.1",
     "http-errors": "^2.0.0",
     "jsonwebtoken": "^9.0.2",
+    "multer": "1.4.5-lts.2",
     "pg": "^8.13.3"
   },
   "packageManager": "pnpm@8.10.2+sha1.e0b68270e89c817ff88b7be62466a2128c53af02",
@@ -26,6 +27,7 @@
     "@types/cookie-parser": "^1.4.8",
     "@types/express": "^5.0.0",
     "@types/jsonwebtoken": "^9.0.9",
+    "@types/multer": "^1.4.12",
     "@types/node": "^22.13.5",
     "@types/pg": "^8.11.11",
     "drizzle-kit": "^0.30.4",

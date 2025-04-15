@@ -9,8 +9,9 @@ export const filesTable = pgTable("files", {
     .references(() => postingsTable.id, { onDelete: "cascade" }), // [ref: > Posting.id]
   url: text().notNull(),
   filename: text().notNull(),
+  mimetype: text().notNull(),
   file_size: bigint({ mode: "bigint" }).notNull(),
-  upload_at: timestamp().notNull(),
+  upload_at: timestamp().notNull().defaultNow(),
 });
 
 export const files = relations(filesTable, ({ one }) => ({
