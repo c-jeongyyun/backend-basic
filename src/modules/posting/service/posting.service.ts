@@ -20,6 +20,7 @@ export class PostingService {
       writerId: result.user.userId,
       createdAt: result.createdAt,
       updatedAt: result.updatedAt,
+      files: result.files,
     };
   }
 
@@ -30,7 +31,6 @@ export class PostingService {
       postings: result.postings.map((post) => ({
         id: post.id,
         title: post.title,
-        content: post.content,
         writerId: post.user.userId,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,

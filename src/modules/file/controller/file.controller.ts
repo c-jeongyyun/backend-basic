@@ -23,7 +23,7 @@ export const addFileRoutes = () => {
   const upload = multer({ dest: "uploads/" });
 
   // auth guard 등록
-  router.use(baseUrl, authGuard);
+  // router.use(baseUrl, authGuard);
 
   // TODO 스트리밍으로 다운 받아야 함
   router.get(

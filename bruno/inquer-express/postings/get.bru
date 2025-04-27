@@ -5,7 +5,7 @@ meta {
 }
 
 get {
-  url: {{baseUrl}}/postings/{{postingId}}
+  url: {{baseUrl}}/postings/3940b370-bb41-43fb-b2a4-e5b8c0bf2e44
   body: json
   auth: bearer
 }
@@ -28,4 +28,10 @@ script:post-response {
   const postingId = res.body.id;
   const postingIdKey ="postingId";
   bru.setEnvVar(postingIdKey,postingId)
+  
+  const files = res.body?.files;
+  if(files?.length>0){
+    const fileIdKey ="fileId";
+    bru.setEnvVar(fileIdKey,files[0].id)
+    }
 }

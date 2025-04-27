@@ -6,7 +6,7 @@ meta {
 
 post {
   url: {{baseUrl}}/postings
-  body: multipartForm
+  body: json
   auth: bearer
 }
 
@@ -24,7 +24,6 @@ body:json {
 body:multipart-form {
   title: 파일업로드 예제4
   content: 파일업로드를 해보자
-  files: @file(/Users/choejeong-yun/Desktop/Screenshot 2025-04-14 at 2.41.26 PM.png|/Users/choejeong-yun/Desktop/Screenshot 2025-04-14 at 2.54.37 PM.png)
 }
 
 script:pre-request {

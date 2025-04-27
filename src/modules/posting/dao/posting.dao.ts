@@ -16,17 +16,32 @@ export class PostingDao {
       user_user_id: string;
       created_at: Date;
       updated_at: Date;
+      file_id: string;
+      filename: string;
+      file_size: number;
+      upload_at: Date;
+      mimetype: string;
     }>(
-      `SELECT p.id, p.title, p.content, p.created_at, p.updated_at, u.id as user_id, u.user_id as user_user_id
+      `SELECT p.id, p.title, p.content, p.created_at, p.updated_at, u.id as user_id, u.user_id as user_user_id, f.id as file_id, f.filename, f.file_size, f.upload_at, f.mimetype 
       FROM "postings" as p  
       JOIN "users" as u
       ON p.user_id = u.id   
+      JOIN "files" as f
+      ON p.id = f.posting_id
       WHERE p.id = $1 
       `,
       [params.id]
     );
 
     console.log("getByIdResult", result.rows);
+    const files = result.rows.map((resultRow) => ({
+      id: resultRow.file_id,
+      postingId: resultRow.id,
+      filename: resultRow.filename,
+      mimetype: resultRow.mimetype,
+      fileSize: resultRow.file_size,
+      uploadAt: resultRow.upload_at,
+    }));
 
     if (result.rows.length === 0) {
       throw new Error("No posting found");
@@ -43,6 +58,7 @@ export class PostingDao {
       },
       createdAt: resultRow.created_at,
       updatedAt: resultRow.updated_at,
+      files,
     };
   }
 
@@ -300,6 +316,14 @@ type GetByIdResult = {
   user: GetByIdResultUser;
   createdAt: Date;
   updatedAt: Date;
+  files: {
+    id: string;
+    postingId: string;
+    filename: string;
+    mimetype: string;
+    fileSize: number;
+    uploadAt: Date;
+  }[];
 };
 
 type GetPageResultPosting = {

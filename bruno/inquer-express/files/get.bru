@@ -4,8 +4,8 @@ meta {
   seq: 3
 }
 
-post {
-  url: {{baseUrl}}/files
+get {
+  url: {{baseUrl}}/files/12debc36-dd33-4847-b7e8-44ca3a8aaa4b
   body: multipartForm
   auth: bearer
 }
@@ -19,11 +19,6 @@ body:json {
     "title": "hello7",
     "content": "this is me"
   }
-}
-
-body:multipart-form {
-  postingId: 3940b370-bb41-43fb-b2a4-e5b8c0bf2e44
-  files: @file(/Users/choejeong-yun/Desktop/Screen Recording 2025-04-14 at 11.24.08 PM.mov|/Users/choejeong-yun/Desktop/Screenshot 2025-04-14 at 2.54.37 PM.png|/Users/choejeong-yun/Desktop/Screenshot 2025-04-14 at 11.21.58 PM.png)
 }
 
 script:pre-request {

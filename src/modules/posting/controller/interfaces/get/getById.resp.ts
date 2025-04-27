@@ -5,4 +5,12 @@ export interface PostingGetByIdResp {
   writerId: string;
   createdAt: Date;
   updatedAt: Date;
+  files: {
+    id: string;
+    postingId: string;
+    filename: string;
+    mimetype: string;
+    fileSize: number;
+    uploadAt: Date;
+  }[];
 }
